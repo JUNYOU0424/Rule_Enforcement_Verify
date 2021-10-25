@@ -161,7 +161,8 @@ static int test_xcrypt_ctr(const char *xcrypt)
 
 static int test_hash_sha1(void)
 {
-    char *testarray = "01 00 5E 00 00 6B 00 80 63 00 09 BA 08 00 45 00 00 52 45 A5 00 00 01 11 D0 DC C0 A8 02 06 E0 00 00 6B 01 3F 01 3F 00 3E 00 00 12 02 00 36 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 63 FF FF 00 09 BA 00 01 9E 4E 05 0F 00 00 45 B1 11 55 2E 1E 67 24 00 00 00 00 00 00 00 00 00 00";
+    //char *testarray = "01 00 5E 00 00 6B 00 80 63 00 09 BA 08 00 45 00 00 52 45 A5 00 00 01 11 D0 DC C0 A8 02 06 E0 00 00 6B 01 3F 01 3F 00 3E 00 00 12 02 00 36 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 63 FF FF 00 09 BA 00 01 9E 4E 05 0F 00 00 45 B1 11 55 2E 1E 67 24 00 00 00 00 00 00 00 00 00 00";
+    char *testarray = "00 0e 39 e3 34 00 00 16 9c 7c b0 00 08 00 45 00 00 6c 00 00 40 00 36 11 62 3a 16 74 07 41 c9 ae fa e3 26 aa 9e 43 00 58 60 98";
     printf("\t-----planetext-----\n\t");
     printf(testarray);
     printf("\n");
