@@ -8,6 +8,7 @@
 #include "hashfunction/sha1.c"
 
 static void phex(uint8_t *str);
+uint8_t HMAC(uint8_t *key,uint8_t *message);
 uint8_t Hash_CTR(uint8_t *in, uint8_t *key);//PRNG
 uint8_t Hash_CBC(uint8_t *in, uint8_t *key);//PRF
 uint8_t SHA1_H(char *test);
@@ -28,24 +29,40 @@ int main(void)
     //eth.src
     char *inport = "00:16:9c:7c:b0:00";
     char *res = malloc(strlen(header)+strlen(timestamp)+strlen(inport)+1);
-    strcpy(res,inport);
+    /*strcpy(res,inport);
     strcat(res,header);
     strcat(res,timestamp);
     session_key = Hash_CBC(in, key);
+    printf("\t-----H(VID)-----\n");
     VID = SHA1_H(res);
-    PktHash = SHA1_H(packet);
+    printf("\t-----H(Packet)-----\n");
+    PktHash = SHA1_H(packet);*/
+    HMAC(key,in);
 }
 
+uint8_t HMAC(uint8_t *key,uint8_t *message){
+    uint8_t o_key_pad[] =  {0x5c, 0x5c, 0x5c, 0x5c, 0x5c, 0x5c, 0x5c, 0x5c, 0x5c, 0x5c, 0x5c, 0x5c, 0x5c, 0x5c, 0x5c, 0x5c};
+    uint8_t i_key_pad[] =  {0x36, 0x36, 0x36, 0x36, 0x36, 0x36, 0x36, 0x36, 0x36, 0x36, 0x36, 0x36, 0x36, 0x36, 0x36, 0x36};
+    uint8_t o_key[16];
+    uint8_t i_key[16];
+    for(int i=0;i<16;i++){
+        o_key[i] = o_key_pad[i] ^ key[i];
+        i_key[i] = i_key_pad[i] ^ key[i];
+    }
+    phex(i_key);
+    phex(o_key);
+}
+int switch_count = 4;
 //turn uint8_t to string
 static void phex(uint8_t *str)
 {
     uint8_t len = 16;
 
     unsigned char i;
-    printf("\t");
+    //printf("\t");
     for (i = 0; i < len; ++i)
     {
-        printf("%.2X ", str[i]);
+        printf("%.2X", str[i]);
     }
     printf("\n");
 }
@@ -60,6 +77,7 @@ uint8_t Hash_CTR(uint8_t *in, uint8_t *key)
     phex(in);
     return *in;
 }
+
 
 
 uint8_t Hash_CBC(uint8_t *in, uint8_t *key)
@@ -91,10 +109,10 @@ uint8_t SHA1_H(char *in)
         fprintf(stderr, "SHA1Result Error %d, could not compute message digest.\n", err);
     else
     {
-        printf("\t-----hashresult-----\n\t");
+        //printf("\t-----hashresult-----\n\t");
         for (i = 0; i < 20; ++i)
         {
-            printf("%02X ", Message_Digest[i]);
+            printf("%02X", Message_Digest[i]);
         }
         printf("\n");
     }

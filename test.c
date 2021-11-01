@@ -56,6 +56,8 @@ static int test_decrypt_cbc(void)
                      0xf6, 0x9f, 0x24, 0x45, 0xdf, 0x4f, 0x9b, 0x17, 0xad, 0x2b, 0x41, 0x7b, 0xe6, 0x6c, 0x37, 0x10};
     //  uint8_t buffer[64];
     struct AES_ctx ctx;
+    printf("key:");
+    phex(key);
     printf("\t-----ciphertext-----\n");
     for (uint8_t i = 0; i < (uint8_t)4; i++)
         phex(in + i * (uint8_t)16);
