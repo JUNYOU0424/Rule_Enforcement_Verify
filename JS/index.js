@@ -4,14 +4,10 @@ const secretKey = '2b7e151628aed2a6abf7158809cf4f3c'
 const packet_t = '000e39e3340000169c7cb00008004500006c000040003611623a16740741c9aefae326aa9e4300586098'
 const header_t = '22.116.7.65201.174.250.22798984051517'
 const inport_t = '00:16:9c:7c:b0:00'
-const timestamp_t = '0.000000000'
+const timestamp_t = 'Jan 23, 2011 13:00:00.845885000'
 let p_src='',p_dst=''
 
-main()
-
-function main() {
-    Init()
-}
+Init()
 
 function Init() {
     let VID = Generate_VID(inport_t, header_t, timestamp_t)
@@ -21,12 +17,14 @@ function Init() {
     let packethash = Generate_PktHash(packet_t)
     p_src = packethash
     p_dst = packethash
-    /*console.log('VID\tLen:' + VID.length + '\n', VID)
-    console.log('Packet\tLen:' + packethash.length + '\n', packethash)
-    console.log('SecretKey\tLen:' + secretKey.length + '\n', secretKey)
+    console.log('-----Init-----\n')
+    console.log('VID\tLen:' + VID.length + '\n', VID)
+    console.log('PacketHash\tLen:' + packethash.length + '\n', packethash)
     console.log('compress key\tLen:' + compress_key.length + '\n', compress_key)
-    console.log('compress signature_key\tLen:' + signature_key.length + '\n', signature_key)
-    console.log('compress signature_info\tLen:' + signature_info.length + '\n', signature_info)*/
+    //console.log('SecretKey\tLen:' + secretKey.length + '\n', secretKey)
+    //console.log('compress signature_key\tLen:' + signature_key.length + '\n', signature_key)
+    //console.log('compress signature_info\tLen:' + signature_info.length + '\n', signature_info)
+    console.log('-----Tagging-----\n')
     Tagging(VID, compress_key, packethash, signature_key, signature_info, 1)
     Verify(p_src,p_dst,VID)
 }
@@ -41,12 +39,13 @@ function Tagging(VID, compress_key, packethash, signature_key, signature_info, i
         //console.log('Packet\tLen:' + packethash.length + '\n', packethash)
         temp = Generate_PktHash(packethash)
         p_dst += temp
-        console.log('temp\tLen:' + temp.length + '\n', temp)
+        console.log('-----S'+i.toString()+'-----\n')
+        console.log('PacketHash\tLen:' + temp.length + '\n', temp)
         packethash = temp
         SK_a[i] = Generate_SessionKey(VID + 0, secretKey)
         SK_b[i] = Generate_SessionKey(VID + 1, secretKey)
         alpha[i] = Generate_SessionKey(SK_a[i], secretKey)
-        console.log('compress alpha\tLen:' + alpha[i].length + '\n', alpha[i])
+        console.log('alpha\tLen:' + alpha[i].length + '\n', alpha[i])
         let a = Inner_Product(packethash, alpha[i])
         let b = Generate_SessionKey(SK_b[i], VID + i.toString())
         tag[i] = a + b
@@ -58,6 +57,7 @@ function Tagging(VID, compress_key, packethash, signature_key, signature_info, i
 }
 
 function Verify(p_src,p_dst,VID) {
+    console.log('-----Verify-----\n')
     console.log('p_src len:'+p_src.length+'\n'+p_src+'\n')
     console.log('p_dst len:'+p_dst.length+'\n'+p_dst+'\n')
     for(let i=1;i<4;i++){

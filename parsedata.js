@@ -1,6 +1,6 @@
 const fs = require('fs')
 
-let rawdata = fs.readFileSync('trace.json')
+let rawdata = fs.readFileSync('trace2.json')
 let data = JSON.parse(rawdata)
 let flow_set = new Array()
 let flow = new Array()
